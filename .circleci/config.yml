@@ -58,7 +58,7 @@ jobs:
           command: yarn install --no-cache --frozen-lockfile 
       - run:
           name: run lint
-          command: ./node_modules/.bin/eslint ./lib/index.js   
+          command: ./node_modules/.bin/eslint ./lib/*.js   
 workflows:
   version: 2
   build:
