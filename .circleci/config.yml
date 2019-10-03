@@ -51,8 +51,6 @@ workflows:
     jobs:
       - cli_publish:
           filters:
-            tags:
-              only: /.*/
             branches:
               only:
-                - alpha          
+                - master          
