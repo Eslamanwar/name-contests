@@ -18,8 +18,9 @@ jobs:
     working_directory: ~/repo           
     steps:
       - checkout
-      - run: sudo apt install -y postgresql-client || true
-      - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          name: install postgresql client to run sql script
+          command: sudo apt install -y postgresql-client || true
       - run:
           name: Waiting for PostgreSQL to start
           command: |
@@ -38,10 +39,10 @@ jobs:
           name: install dependencies
           command: yarn install --no-cache --frozen-lockfile   
       - run:
-          name: load data into database
+          name: load data into Mongodb database
           command: node database/loadTestMongoData.js
       - run:
-          name: load data into database pg
+          name: load data into Postgre database
           command: psql -U root -d contests -a -f database/test-pg-data.sql
       - run: 
           yarn test
