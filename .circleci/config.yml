@@ -25,24 +25,9 @@ jobs:
           name: Wait for Mongo to start
           # preinstalled in circleci/* docker image
           command: dockerize -wait tcp://127.0.0.1:27017 -timeout 120s
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: "JavaScript Test Suite"
-          environment:
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
-          command: yarn test -- --ci --testResultsProcessor="jest-junit"
-      - store_test_results:
-          path: reports/junit
-      - store_artifacts:
-          path: reports/junit
+          command: yarn test 
 workflows:
   version: 2
   build:
