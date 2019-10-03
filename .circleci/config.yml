@@ -1,7 +1,7 @@
 version: 2
 jobs:
   # CLI publishing
-  cli_publish:
+  unit_test:
     docker:
       - image: circleci/node:10.16.3
         environment:      
@@ -46,12 +46,34 @@ jobs:
           command: psql -U root -d contests -a -f database/test-pg-data.sql
       - run: 
           yarn test
+          
+linting_rules:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/repo 
+    steps:
+      - checkout
+      - run:
+          command: |
+            mkdir -p ~/reports
+            yarn lint --format junit -o ~/reports/js-lint-results.xml && yarn lint-es5-build --format junit -o ~/reports/js-es5-lint-results.xml  && yarn lint:prettier:ci && yarn check-copyright-headers
+          when: always
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports     
+      
 workflows:
   version: 2
   build:
     jobs:
-      - cli_publish:
+      - unit_test:
           filters:
             branches:
               only:
-                - master          
+                - master    
+      - linting_rules:
+          filters:
+            branches:
+              only:
+                - master                
