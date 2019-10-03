@@ -61,7 +61,7 @@ jobs:
           command: ./node_modules/.bin/eslint --init
       - run:
           name: run lint
-          command: ./node_modules/.bin/eslint --init     
+          command: ./node_modules/.bin/eslint ./lib/index.js   
 workflows:
   version: 2
   build:
