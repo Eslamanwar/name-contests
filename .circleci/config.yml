@@ -26,6 +26,9 @@ jobs:
           # preinstalled in circleci/* docker image
           command: dockerize -wait tcp://127.0.0.1:27017 -timeout 120s
       - run:
+          name: install dependencies
+          command: yarn install --no-cache --frozen-lockfile     
+      - run:
           name: "JavaScript Test Suite"
           command: yarn test 
 workflows:
