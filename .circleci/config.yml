@@ -8,5 +8,8 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install node dependencies
+          command: 'yarn install --no-cache --frozen-lockfile'      
+      - run:
           name: Check that all the unit tests are passing
           command: 'yarn test'
