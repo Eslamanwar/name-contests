@@ -1,12 +1,91 @@
-version: 2.1
-jobs:
-  build: 
-    working_directory: ~/mern-starter
+version: 2
+jobs: 
+  # CLI publishing
+  unit_test: 
     docker:
       - image: circleci/node:10.16.3
-      - image: mongo:4.2.0
+        environment:      
+          PGUSER: root 
+          PGHOST: 127.0.0.1
+      - image: circleci/mongo:4
+        environment:
+          MONGO_INITDB_DATABASE: contests      
+      - image: circleci/postgres:10.3-alpine
+        environment:
+          POSTGRES_DB: contests
+          POSTGRES_USER: root
+          TEST_DATABASE_URL: postgresql://root@localhost/contests
+    working_directory: ~/repo           
     steps:
       - checkout
       - run:
-          name: Check that all the unit tests are passing
-          command: 'yarn test'
+          name: install postgresql client to run sql script
+          command: sudo apt install -y postgresql-client || true
+      - run:
+          name: Waiting for PostgreSQL to start
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 2
+            done
+            echo Failed waiting for Postgres && exit 1
+      - run:
+          name: Wait for Mongo to start
+          # preinstalled in circleci/* docker image
+          command: dockerize -wait tcp://127.0.0.1:27017 -timeout 120s
+      - run:
+          name: install dependencies
+          command: yarn install --no-cache --frozen-lockfile   
+      - run:
+          name: load data into Mongodb database
+          command: node database/loadTestMongoData.js
+      - run:
+          name: load data into Postgre database
+          command: psql -U root -d contests -a -f database/test-pg-data.sql
+      - run: 
+          yarn test
+          
+  linting_rules:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/repo 
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: yarn install --no-cache --frozen-lockfile 
+      - run:
+          name: check all linting rules 
+          command: ./node_modules/.bin/eslint ./lib/index.js  
+  dockerized_aritifact:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/repo 
+    steps:
+      - checkout
+      - setup_remote_docker:   
+          docker_layer_caching: true                  
+      - run:
+          name: login to docker hub
+          command: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin          
+workflows:
+  version: 2
+  build:
+    jobs:
+      - unit_test:
+          filters:
+            branches:
+              only:
+                - master    
+      - linting_rules:
+          filters:
+            branches:
+              only:
+                - master                
+      - dockerized_aritifact:
+          filters:
+            branches:
+              only:
+                - master                               
