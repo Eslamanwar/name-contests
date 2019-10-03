@@ -53,18 +53,22 @@ jobs:
     working_directory: ~/repo 
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: install dependencies
-          command: yarn install --no-cache --frozen-lockfile        
-      - run:
-          command: |
-            mkdir -p ~/reports
-            yarn lint --format junit -o ~/reports/js-lint-results.xml && yarn lint-es5-build --format junit -o ~/reports/js-es5-lint-results.xml  && yarn lint:prettier:ci && yarn check-copyright-headers
-          when: always
+          name: "JavaScript Linter"
+          command: yarn lint -- --format junit -o js-lint-results.xml
       - store_test_results:
-          path: ~/reports
+          path: reports/junit
       - store_artifacts:
-          path: ~/reports     
+          path: reports/junit 
       
 workflows:
   version: 2
