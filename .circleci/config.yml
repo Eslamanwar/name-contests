@@ -58,7 +58,18 @@ jobs:
           command: yarn install --no-cache --frozen-lockfile 
       - run:
           name: check all linting rules 
-          command: ./node_modules/.bin/eslint ./lib/index.js   
+          command: ./node_modules/.bin/eslint ./lib/index.js  
+  dockerized_aritifact:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/repo 
+    steps:
+      - checkout
+      - setup_remote_docker:   
+          docker_layer_caching: true                  
+      - run:
+          name: login to docker hub
+          command: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin          
 workflows:
   version: 2
   build:
@@ -73,3 +84,8 @@ workflows:
             branches:
               only:
                 - master                
+      - dockerized_aritifact:
+          filters:
+            branches:
+              only:
+                - master                               
