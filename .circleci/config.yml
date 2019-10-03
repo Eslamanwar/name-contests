@@ -54,6 +54,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install dependencies
+          command: yarn install --no-cache --frozen-lockfile        
+      - run:
           command: |
             mkdir -p ~/reports
             yarn lint --format junit -o ~/reports/js-lint-results.xml && yarn lint-es5-build --format junit -o ~/reports/js-es5-lint-results.xml  && yarn lint:prettier:ci && yarn check-copyright-headers
