@@ -64,7 +64,10 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: "JavaScript Linter"
-          command: yarn lint -- --format junit -o js-lint-results.xml
+          command: eslint --init
+      - run:
+          name: run lint
+          command: eslint ./lib/index.js        
       - store_test_results:
           path: reports/junit
       - store_artifacts:
