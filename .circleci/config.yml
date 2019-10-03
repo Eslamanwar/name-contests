@@ -1,5 +1,5 @@
 version: 2
-jobs:
+jobs: 
   # CLI publishing
   unit_test: 
     docker:
