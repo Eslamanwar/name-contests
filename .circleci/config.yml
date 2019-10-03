@@ -1,7 +1,7 @@
 version: 2
 jobs:
   # CLI publishing
-  unit_test:
+  unit_test: 
     docker:
       - image: circleci/node:10.16.3
         environment:      
