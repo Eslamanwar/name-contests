@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: circleci/node:10.16.3
         environment:      
+          PGUSER: root
           PGHOST: 127.0.0.1
       - image: circleci/mongo:4
         environment:
