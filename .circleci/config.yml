@@ -53,26 +53,15 @@ jobs:
     working_directory: ~/repo 
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: install dependencies
+          command: yarn install --no-cache --frozen-lockfile 
       - run:
           name: "JavaScript Linter"
           command: eslint --init
       - run:
           name: run lint
           command: eslint ./lib/index.js        
-      - store_test_results:
-          path: reports/junit
-      - store_artifacts:
-          path: reports/junit 
-      
 workflows:
   version: 2
   build:
