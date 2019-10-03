@@ -47,7 +47,7 @@ jobs:
       - run: 
           yarn test
           
-linting_rules:
+  linting_rules:
     docker:
       - image: circleci/node:10.16.3
     working_directory: ~/repo 
