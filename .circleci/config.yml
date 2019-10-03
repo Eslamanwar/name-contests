@@ -40,9 +40,7 @@ jobs:
           name: load data into database
           command: node database/loadTestMongoData.js && node database/mdb.js  && node database/pgdb.js  
       - run: 
-          yarn start:dev &
-      - run:
-          sleep 5
+          yarn start:dev & sleep 30
       - run: 
           yarn test
 workflows:
