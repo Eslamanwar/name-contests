@@ -38,13 +38,13 @@ jobs:
           command: yarn install --no-cache --frozen-lockfile   
       - run:
           name: load data into database
-          command: node database/loadTestMongoData.js && node database/mdb.js  && node database/pgdb.js         
+          command: node database/loadTestMongoData.js && node database/mdb.js  && node database/pgdb.js  
+      - run: 
+          yarn start:dev &
       - run:
-          name: "run app"
-          command: yarn start:dev
-      - run:
-          name: "JavaScript Test Suite"
-          command: yarn test 
+          sleep 5
+      - run: 
+          yarn test
 workflows:
   version: 2
   build:
