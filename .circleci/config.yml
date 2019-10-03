@@ -18,10 +18,7 @@ jobs:
           name: Save Yarn Package Cache
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache/yarn
-      - run:
-          name: run the app before testing 
-          command: 'yarn start:dev'            
+            - ~/.cache/yarn           
       - run:
           name: Check that all the unit tests are passing
           command: 'yarn test'
