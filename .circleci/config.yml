@@ -39,6 +39,9 @@ jobs:
       - run:
           name: load data into database
           command: node database/loadTestMongoData.js && node database/mdb.js  && node database/pgdb.js  
+      - run:
+          name: load data into database pg
+          command: psql -U root -d contests -a -f database/test-pg-data.sql
       - run: 
           yarn test
 workflows:
