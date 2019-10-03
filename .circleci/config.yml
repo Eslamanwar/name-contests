@@ -38,9 +38,18 @@ jobs:
       - run:
           name: load data into database
           command: node database/loadTestMongoData.js && node database/mdb.js  && node database/pgdb.js         
-      - run:
-          name: load data into database pg
-          command: psql -f database/test-pg-data.sql
+      - run: |
+          psql \
+          -d $TEST_DATABASE_URL \
+          -c "CREATE TABLE test (name char(25));"
+      - run: |
+          psql \
+          -d $TEST_DATABASE_URL \
+          -c "INSERT INTO test VALUES ('John'), ('Joanna'), ('Jennifer');"
+      - run: |
+          psql \
+          -d $TEST_DATABASE_URL \
+          -c "SELECT * from test"
       - run:
           name: "JavaScript Test Suite"
           command: yarn test 
