@@ -5,21 +5,12 @@ jobs:
     docker:
       - image: circleci/node:10.16.3
       - image: circleci/mongo:4
-        environment:
-          MONGO_INITDB_ROOT_USERNAME: prisma
-          MONGO_INITDB_ROOT_PASSWORD: prisma
       - image: circleci/postgres:10.3-alpine
-        environment:
-          POSTGRES_USER: prisma
-          POSTGRES_PASSWORD: prisma
-          POSTGRES_PW: prisma
-          POSTGRES_DB: prisma
     working_directory: ~/repo          
     steps:
       - checkout
       - run: sudo apt install postgresql-client
       - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - run: yarn
       - run:
           name: Waiting for PostgreSQL to start
           command: |
