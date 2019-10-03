@@ -34,7 +34,7 @@ jobs:
           command: yarn install --no-cache --frozen-lockfile   
       - run:
           name: load data into database
-          command: cd ./database && yarn run loadTestMongoData.js
+          command: node database/loadTestMongoData.js
       - run:
           name: "JavaScript Test Suite"
           command: yarn test 
