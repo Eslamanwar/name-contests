@@ -55,6 +55,4 @@ workflows:
               only: /.*/
             branches:
               only:
-                - master
-                - beta
                 - alpha          
