@@ -10,7 +10,7 @@ jobs:
       - image: circleci/postgres:10.3-alpine
         environment:
           POSTGRES_DB: contests      
-    working_directory: ~/repo          
+    working_directory: ~/repo           
     steps:
       - checkout
       - run: sudo apt install postgresql-client
