@@ -7,9 +7,26 @@ jobs:
       - image: mongo:4.2.0
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
-          name: install node dependencies
-          command: 'yarn install --no-cache --frozen-lockfile'      
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: run the app before testing 
+          command: 'yarn start:dev'            
       - run:
           name: Check that all the unit tests are passing
           command: 'yarn test'
+      - run: mkdir ~/junit          
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit          
