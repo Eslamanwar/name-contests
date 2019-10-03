@@ -17,7 +17,7 @@ jobs:
     working_directory: ~/repo           
     steps:
       - checkout
-      - run: sudo apt install postgresql-client
+      - run: sudo apt install -y postgresql-client || true
       - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Waiting for PostgreSQL to start
