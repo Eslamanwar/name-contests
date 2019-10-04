@@ -25,4 +25,4 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 EXPOSE 3000
 
 # start the app
-CMD ["yarn", "start"]
+CMD dockerize -wait tcp://mongodb:27017 -wait tcp://postgres:5432 yarn start
