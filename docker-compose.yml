@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nodejs:
-    image: eslamanwar/name-contests:0.1.120
+    image: eslamanwar/name-contests:0.1.123
     container_name: nodejs
     restart: unless-stopped
     environment:
@@ -11,8 +11,11 @@ services:
       MONGO_DB: contests
       MONGO_PORT: 27017
       MONGO_HOSTNAME: mongodb
-      DATABASE_URL: postgres://user:pass@postgres:5432/contests
-            
+      PGHOST: postgres
+      PGUSER: user
+      PGDATABASE: contests
+      PGPASSWORD: pass
+      PGPORT: 5432 
     ports:
       - "3000:3000"
     volumes:
@@ -27,6 +30,17 @@ services:
     networks:
       - app-network
 
+  seedmongo:
+    image: eslamanwar/name-contests:0.1.123
+    deploy:
+      restart_policy:
+        condition: none
+    container_name: seedmongo
+    command: node database/loadTestMongoData.js    
+    links:
+      - mongodb
+    networks:
+      - app-network        
 
   mongodb:
     image: mongo:4
@@ -44,10 +58,11 @@ services:
       - "35432:5432"
     environment:
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      POSTGRES_PASSWORD: pass            
       POSTGRES_DB: contests
     volumes:
-      - postgresdata:/var/lib/postgresql/data     
+      - postgresdata:/var/lib/postgresql/data    
+      - ./database:/docker-entrypoint-initdb.d/  
     networks:
       - app-network        
       
