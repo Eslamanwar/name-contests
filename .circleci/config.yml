@@ -72,7 +72,7 @@ jobs:
           command: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin   
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build -t eslamanwar/name-contests:$TAG eslamanwar/name-contests:latest .
+          docker build -t eslamanwar/name-contests:$TAG -t eslamanwar/name-contests:latest .
           docker push eslamanwar/name-contests:$TAG
 workflows:
   version: 2
