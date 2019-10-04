@@ -14,5 +14,8 @@ RUN yarn install --no-cache --frozen-lockfile
 # copy the nodejs app
 COPY . /usr/src/app
 
+# expose port 3000 for external
+EXPOSE 3000
+
 # start the app
 CMD ["yarn", "start"]
