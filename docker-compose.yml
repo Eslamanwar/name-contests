@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  nodejs:
+    image: eslamanwar/name-contests:latest
+    container_name: nodejs
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_HOSTNAME=mongodb
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
+    ports:
+      - "80:3000"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: dockerize -wait tcp://mongodb:27017 -timeout 120s 
+
+  mongodb:
+    image: mongo:4
+    container_name: mongodb
+    restart: unless-stopped
+    env_file: .env
+    volumes:     
+      - mongodbdata:/data/db
+    networks:
+      - app-network  
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodbdata:
+  node_modules:
