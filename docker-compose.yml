@@ -19,6 +19,7 @@ services:
       - app-network
     command: dockerize -wait tcp://mongodb:27017 -timeout 120s 
 
+
   mongodb:
     image: mongo:4
     container_name: mongodb
