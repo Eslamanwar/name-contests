@@ -3,7 +3,8 @@ jobs:
   unit_test: 
     docker:
       - image: circleci/node:10.16.3
-        environment:      
+        environment:
+          NODE_ENV: development
           PGUSER: root 
           PGHOST: 127.0.0.1
       - image: circleci/mongo:4
