@@ -90,6 +90,9 @@ workflows:
               only:
                 - master                
       - dockerized_aritifact:
+          requires:
+            - unit_test
+            - linting_rules                 
           filters:
             branches:
               only:
