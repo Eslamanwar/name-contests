@@ -50,6 +50,8 @@ services:
         
   seedmongo:
     image: eslamanwar/name-contests:latest
+    environment:
+      NODE_ENV: development    
     deploy:
       restart_policy:
         condition: none
