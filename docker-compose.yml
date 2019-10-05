@@ -56,7 +56,7 @@ services:
       restart_policy:
         condition: none
     container_name: seedmongo
-    command: node database/loadTestMongoData.js    
+    command: dockerize -wait tcp://mongodb:27017 node database/loadTestMongoData.js    
     links:
       - mongodb
     networks:
