@@ -85,15 +85,16 @@ workflows:
               only:
                 - master    
       - linting_rules:
+          requires:
+            - unit_test      
           filters:
             branches:
               only:
                 - master                
       - dockerized_aritifact:
           requires:
-            - unit_test
-            - linting_rules                 
+            - linting_rules          
           filters:
             branches:
               only:
-                - master                               
+                - master          
