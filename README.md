@@ -84,7 +84,6 @@ CMD dockerize -wait tcp://mongodb:27017 -wait tcp://postgres:5432 yarn start
 - create 3 jobs unit_test , linting_rules , dockerized_aritifact 
 - with sequentail workflows (first run unit_test and then  linting_rules and then dockerized_aritifact)   
 - Merges to master branch generate a docker image and pushed to my docker-hub repo
-- 
 
 
 ```
@@ -387,6 +386,9 @@ resolver 8.8.8.8 8.8.4.4;
 ```
 
 Because we are using a self-signed certificate, the SSL stapling will not be used. Nginx will simply output a warning, disable stapling for our self-signed cert, and continue to operate correctly.
+
+- Enable Nginx Microcaching (see Cache section in nginx.conf file below)
+
 
 
 - deny access to important files and folders
